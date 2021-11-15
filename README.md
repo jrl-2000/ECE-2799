@@ -4,4 +4,14 @@ ECE 2799 Electrical and Computer Engineering Design
 
 Prof. Bitar, Prof. Bhada
 
-Course for next school year creating repo
+IS236 POD Mask
+
+Jonathan Lopez
+
+Michael Rothstein
+
+Weizhe Wang
+
+Blank Arduino file
+
+Arduino Nano
