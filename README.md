@@ -12,6 +12,4 @@ Michael Rothstein
 
 Weizhe Wang
 
-Blank Arduino file
-
 Arduino Nano
