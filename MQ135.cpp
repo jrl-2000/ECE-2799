@@ -3,10 +3,13 @@
 @file     MQ135.cpp
 @author   G.Krocker (Mad Frog Labs)
 @license  GNU GPLv3
+
 First version of an Arduino Library for the MQ135 gas sensor
 TODO: Review the correction factor calculation. This currently relies on
 the datasheet but the information there seems to be wrong.
+
 @section  HISTORY
+
 v1.0 - First release
 */
 /**************************************************************************/
@@ -16,6 +19,7 @@ v1.0 - First release
 /**************************************************************************/
 /*!
 @brief  Default constructor
+
 @param[in] pin  The analog input pin for the readout of the sensor
 */
 /**************************************************************************/
@@ -28,8 +32,10 @@ MQ135::MQ135(uint8_t pin) {
 /**************************************************************************/
 /*!
 @brief  Get the correction factor to correct for temperature and humidity
+
 @param[in] t  The ambient air temperature
 @param[in] h  The relative humidity
+
 @return The calculated correction factor
 */
 /**************************************************************************/
@@ -40,6 +46,7 @@ float MQ135::getCorrectionFactor(float t, float h) {
 /**************************************************************************/
 /*!
 @brief  Get the resistance of the sensor, ie. the measurement value
+
 @return The sensor resistance in kOhm
 */
 /**************************************************************************/
@@ -52,8 +59,10 @@ float MQ135::getResistance() {
 /*!
 @brief  Get the resistance of the sensor, ie. the measurement value corrected
         for temp/hum
+
 @param[in] t  The ambient air temperature
 @param[in] h  The relative humidity
+
 @return The corrected sensor resistance kOhm
 */
 /**************************************************************************/
@@ -64,6 +73,7 @@ float MQ135::getCorrectedResistance(float t, float h) {
 /**************************************************************************/
 /*!
 @brief  Get the ppm of CO2 sensed (assuming only CO2 in the air)
+
 @return The ppm of CO2 in the air
 */
 /**************************************************************************/
@@ -75,8 +85,10 @@ float MQ135::getPPM() {
 /*!
 @brief  Get the ppm of CO2 sensed (assuming only CO2 in the air), corrected
         for temp/hum
+
 @param[in] t  The ambient air temperature
 @param[in] h  The relative humidity
+
 @return The ppm of CO2 in the air
 */
 /**************************************************************************/
@@ -87,6 +99,7 @@ float MQ135::getCorrectedPPM(float t, float h) {
 /**************************************************************************/
 /*!
 @brief  Get the resistance RZero of the sensor for calibration purposes
+
 @return The sensor resistance RZero in kOhm
 */
 /**************************************************************************/
@@ -98,8 +111,10 @@ float MQ135::getRZero() {
 /*!
 @brief  Get the corrected resistance RZero of the sensor for calibration
         purposes
+
 @param[in] t  The ambient air temperature
 @param[in] h  The relative humidity
+
 @return The corrected sensor resistance RZero in kOhm
 */
 /**************************************************************************/
