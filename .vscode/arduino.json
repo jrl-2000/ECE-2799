@@ -1,3 +1,6 @@
 {
-    "board": "arduino:avr:nano"
+    "board": "arduino:avr:nano",
+    "sketch": "ECE-2799.ino",
+    "programmer": "arduino:avrisp",
+    "port": "COM3"
 }
