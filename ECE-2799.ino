@@ -62,13 +62,14 @@ ISR(TIMER0_COMPA_vect){//timer0 interrupt 1kHz
   if (counter > 999) {
     counter = 0;
     ppm = gasSensor.getPPM();
+    Serial.println(ppm);
   } else {
     counter ++;
   }
 }
 
 void loop(){
-  Serial.println(ppm);
+
   if (ppm > 500) {
     for(int i=0; i<255; i++) { //do this 255 times
       analogWrite(buzzer, i); //raise the voltage sent out of the pin by 1
