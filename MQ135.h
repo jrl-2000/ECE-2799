@@ -19,7 +19,7 @@ v1.0 - First release
 #endif
 
 /// The load resistance on the board
-#define RLOAD 10.0
+#define RLOAD 22.0
 /// Calibration resistance at atmospheric CO2 level
 /// Foisie Room Temp 71 F or 22C
 #define RZERO 95.18
