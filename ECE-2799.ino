@@ -2,7 +2,7 @@
 #include <avr/interrupt.h>
 #define buzzer 11 //change to any output pin (not analog inputs) 
 #define PPM_BUFFER_SIZE 5 // size - 1
-#define PPM_THRSHD 300
+#define PPM_THRSHD 600
 
 const int ANALOGPIN=0;
 

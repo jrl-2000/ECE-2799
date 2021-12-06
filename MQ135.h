@@ -22,7 +22,7 @@ v1.0 - First release
 #define RLOAD 22.0
 /// Calibration resistance at atmospheric CO2 level
 /// Foisie Room Temp 71 F or 22C
-#define RZERO 95.18
+#define RZERO 212
 /// Parameters for calculating ppm of CO2 from sensor resistance
 #define PARA 116.6020682
 #define PARB 2.769034857
@@ -34,7 +34,7 @@ v1.0 - First release
 #define CORD 0.0018
 
 /// Atmospheric CO2 level for calibration purposes
-#define ATMOCO2 397.13
+#define ATMOCO2 413.77
 
 class MQ135 {
  private:
