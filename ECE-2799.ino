@@ -2,15 +2,15 @@
 #include <avr/interrupt.h>
 #define buzzer 11 //change to any output pin (not analog inputs) 
 #define PPM_BUFFER_SIZE 5 // size - 1
-#define PPM_THRSHD 600
+#define PPM_THRSHD 500
 
 const int ANALOGPIN=0;
 
 MQ135 gasSensor = MQ135(ANALOGPIN);
 
-unsigned int counter = 0;
-unsigned int i = 0;
-int decre = 0; // 0--increament, 1--decreament
+// unsigned int counter = 0;
+// unsigned int i_dutycycle = 0;
+// int decre = 0; // 0--increament, 1--decreament
 
 float ppm;
 unsigned index = 0;
@@ -20,18 +20,18 @@ float ppm_buff [PPM_BUFFER_SIZE];
 void setup(){
   cli();//stop interrupts
 
-  //set timer0 interrupt at 1kHz
-    TCCR0A = 0;// set entire TCCR0A register to 0
-    TCCR0B = 0;// same for TCCR0B
-    TCNT0  = 0;//initialize counter value to 0
-    // set compare match register for 1khz increments
-    OCR0A = 249;// = (16*10^6) / (1000*64) - 1 (must be <256)
-    // turn on CTC mode
-    TCCR0A |= (1 << WGM01);
-    // Set CS01 and CS00 bits for 64 prescaler
-    TCCR0B |= (1 << CS01) | (1 << CS00);   
-    // enable timer compare interrupt
-    TIMSK0 |= (1 << OCIE0A);
+  // //set timer0 interrupt at 1kHz
+  //   TCCR0A = 0;// set entire TCCR0A register to 0
+  //   TCCR0B = 0;// same for TCCR0B
+  //   TCNT0  = 0;//initialize counter value to 0
+  //   // set compare match register for 1khz increments
+  //   OCR0A = 249;// = (16*10^6) / (1000*64) - 1 (must be <256)
+  //   // turn on CTC mode
+  //   TCCR0A |= (1 << WGM01);
+  //   // Set CS01 and CS00 bits for 64 prescaler
+  //   TCCR0B |= (1 << CS01) | (1 << CS00);   
+  //   // enable timer compare interrupt
+  //   TIMSK0 |= (1 << OCIE0A);
 
   //set timer1 interrupt at 1Hz
     TCCR1A = 0;// set entire TCCR1A register to 0
@@ -59,20 +59,30 @@ void setup(){
   //   // enable timer compare interrupt
   //   TIMSK2 |= (1 << OCIE2A);
 
-
-  sei();//allow interrupts
-
   Serial.begin(9600);
   pinMode(buzzer, OUTPUT); //tell arduino the buzzer is an output device
+
+  //play a startup tune
+  analogWrite(buzzer, 32);
+  delay(50000);
+  analogWrite(buzzer, 100);
+  delay(50000);
+  analogWrite(buzzer, 220);
+  delay(50000);
+  analogWrite(buzzer, 0);
 
   // load ppm_buffer
   for (int i = 0; i < PPM_BUFFER_SIZE; i++) {
     ppm_buff [i] = 0.0f;
   }
+
+  pinMode(LED_BUILTIN, OUTPUT);
+
+  sei();//allow interrupts
 }
 
 ISR(TIMER1_COMPA_vect){//timer1 interrupt 1Hz
-  char readings [500];
+  //char readings [500];
   ppm = gasSensor.getPPM();
   Serial.println(ppm);
 
@@ -91,30 +101,34 @@ ISR(TIMER1_COMPA_vect){//timer1 interrupt 1Hz
   // Serial.println(sumppm);
 }
 
-ISR(TIMER0_COMPA_vect){//timer1 interrupt at 1kHz
-  if (counter > 9) {
-    counter = 0;
-    if (i == 255) {
-      decre = 1;
-    } else if (i == 0) {
-      decre = 0;
-    }
-    if (decre) { // if decreament
-      i --;
-    } else {
-      i ++;
-    }
-    if (sumppm > PPM_BUFFER_SIZE * PPM_THRSHD)  
-      analogWrite(buzzer, i); //raise the voltage sent out of the pin by 1
-    else
-      analogWrite(buzzer, 0); //stop the buzzer
-  } else {
-    counter ++;
-  }
-}
+// ISR(TIMER0_COMPA_vect){//timer1 interrupt at 1kHz
+//   if (counter > 9) { // creating a delay so buzzer will be active at 100Hz
+//     counter = 0;
+//     if (i_dutycycle == 255) {
+//       decre = 1;
+//     } else if (i_dutycycle == 0) {
+//       decre = 0;
+//     }
+//     if (decre) { // if decreament
+//       i_dutycycle --;
+//     } else {
+//       i_dutycycle ++;
+//     }
+//     if (sumppm > PPM_BUFFER_SIZE * PPM_THRSHD)  
+//       analogWrite(buzzer, i_dutycycle); //raise the duty cycle of PWM
+//     else
+//       analogWrite(buzzer, 0); //stop the buzzer
+//   } else {
+//     counter ++;
+//   }
+// }
 
 void loop(){
-
+  digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on to indicate device is on
+  if (sumppm > PPM_BUFFER_SIZE * PPM_THRSHD)
+    analogWrite(buzzer, 100); //set the duty cycle of PWM
+  else
+    analogWrite(buzzer, 0); //stop the buzzer
 }
 
 
